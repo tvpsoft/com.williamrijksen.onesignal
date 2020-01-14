@@ -35,17 +35,9 @@ NSString * const NotificationOpened = @"notificationOpened";
 
 - (void)_configure
 {
-    NSLog(@"[DEBUG] com.williamrijksen.onesignal configure");
+    NSLog(@"[DEBUG] com.williamrijksen.onesignal configure pp");
     [super _configure];
-    [[TiApp app] registerApplicationDelegate:self];
-}
-
-#pragma mark - UIApplicationDelegate
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    NSLog(@"[DEBUG] com.williamrijksen.onesignal didFinishLaunchingWithOptions");
-
+    
     id notificationReceivedBlock = ^(OSNotification *notification) {
         OSNotificationPayload* payload = notification.payload;
         NSLog(@"[DEBUG] com.williamrijksen.onesignal notification received %@", payload);
@@ -65,15 +57,15 @@ NSString * const NotificationOpened = @"notificationOpened";
 
     NSString *OneSignalAppID = [[TiApp tiAppProperties] objectForKey:@"OneSignal_AppID"];
     [OneSignal setLocationShared:NO];
-    [OneSignal initWithLaunchOptions:launchOptions
+    [OneSignal initWithLaunchOptions: [[TiApp app] launchOptions]
                                appId:OneSignalAppID
           handleNotificationReceived:notificationReceivedBlock
             handleNotificationAction:notificationOpenedBlock
                             settings:onesignalInitSettings];
     [OneSignal setLocationShared:YES];
-
-    return YES;
+    
 }
+
 
 #pragma mark - Listernes
 
